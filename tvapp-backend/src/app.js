@@ -28,4 +28,14 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
+// Optionally ensure DB connectivity before starting
+const pool = require('./config/db');
+pool.getConnection()
+  .then((conn) => {
+    conn.release();
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error('Database connection failed:', err.message);
+    process.exit(1);
+  });

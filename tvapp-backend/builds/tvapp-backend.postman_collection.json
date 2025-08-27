@@ -1,0 +1,188 @@
+{
+  "info": {
+    "name": "TV-App Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "tvapp-backend-api"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  if (json.token) { pm.environment.set('userToken', json.token); }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "{{authHeader}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "List Customers",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "{{authHeader}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/customers", "host": ["{{baseUrl}}"], "path": ["api","customers"] }
+          }
+        },
+        {
+          "name": "Get Customer",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "{{authHeader}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/customers/{{customerId}}", "host": ["{{baseUrl}}"], "path": ["api","customers", "{{customerId}}"] }
+          }
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "{{authHeader}}" }, {"key": "Content-Type","value": "application/json"} ],
+            "url": { "raw": "{{baseUrl}}/api/customers", "host": ["{{baseUrl}}"], "path": ["api","customers"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme Corp\",\n  \"email\": \"client@example.com\",\n  \"phone\": \"+15551234567\",\n  \"balance\": 0\n}" }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PUT",
+            "header": [ { "key": "Authorization", "value": "{{authHeader}}" }, {"key": "Content-Type","value": "application/json"} ],
+            "url": { "raw": "{{baseUrl}}/api/customers/{{customerId}}", "host": ["{{baseUrl}}"], "path": ["api","customers","{{customerId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme Corp Updated\",\n  \"email\": \"client@example.com\",\n  \"phone\": \"+15551234567\",\n  \"balance\": 100\n}" }
+          }
+        },
+        {
+          "name": "Delete Customer",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "{{authHeader}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/customers/{{customerId}}", "host": ["{{baseUrl}}"], "path": ["api","customers","{{customerId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recharges",
+      "item": [
+        {"name": "List Recharges","request": {"method":"GET","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/recharges","host":["{{baseUrl}}"],"path":["api","recharges"]}}},
+        {"name": "Get Recharge","request": {"method":"GET","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/recharges/{{rechargeId}}","host":["{{baseUrl}}"],"path":["api","recharges","{{rechargeId}}"]}}},
+        {"name": "Create Recharge","request": {"method":"POST","header":[{"key":"Authorization","value":"{{authHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/recharges","host":["{{baseUrl}}"],"path":["api","recharges"]},"body":{"mode":"raw","raw":"{\n  \"customer_id\": 1,\n  \"amount\": 50\n}"}}},
+        {"name": "Update Recharge","request": {"method":"PUT","header":[{"key":"Authorization","value":"{{authHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/recharges/{{rechargeId}}","host":["{{baseUrl}}"],"path":["api","recharges","{{rechargeId}}"]},"body":{"mode":"raw","raw":"{\n  \"customer_id\": 1,\n  \"amount\": 75\n}"}}},
+        {"name": "Delete Recharge","request": {"method":"DELETE","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/recharges/{{rechargeId}}","host":["{{baseUrl}}"],"path":["api","recharges","{{rechargeId}}"]}}}
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {"name": "List Payments","request": {"method":"GET","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/payments","host":["{{baseUrl}}"],"path":["api","payments"]}}},
+        {"name": "Get Payment","request": {"method":"GET","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/payments/{{paymentId}}","host":["{{baseUrl}}"],"path":["api","payments","{{paymentId}}"]}}},
+        {"name": "Create Payment","request": {"method":"POST","header":[{"key":"Authorization","value":"{{authHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/payments","host":["{{baseUrl}}"],"path":["api","payments"]},"body":{"mode":"raw","raw":"{\n  \"customer_id\": 1,\n  \"amount\": 100,\n  \"due_date\": \"2025-12-31\",\n  \"status\": \"pending\"\n}"}}},
+        {"name": "Update Payment","request": {"method":"PUT","header":[{"key":"Authorization","value":"{{authHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/payments/{{paymentId}}","host":["{{baseUrl}}"],"path":["api","payments","{{paymentId}}"]},"body":{"mode":"raw","raw":"{\n  \"customer_id\": 1,\n  \"amount\": 120,\n  \"due_date\": \"2025-12-31\",\n  \"status\": \"pending\"\n}"}}},
+        {"name": "Delete Payment","request": {"method":"DELETE","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/payments/{{paymentId}}","host":["{{baseUrl}}"],"path":["api","payments","{{paymentId}}"]}}}
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {"name": "List Notifications","request": {"method":"GET","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/notifications","host":["{{baseUrl}}"],"path":["api","notifications"]}}},
+        {"name": "Get Notification","request": {"method":"GET","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/notifications/{{notificationId}}","host":["{{baseUrl}}"],"path":["api","notifications","{{notificationId}}"]}}},
+        {"name": "Create Notification","request": {"method":"POST","header":[{"key":"Authorization","value":"{{authHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/notifications","host":["{{baseUrl}}"],"path":["api","notifications"]},"body":{"mode":"raw","raw":"{\n  \"message\": \"Hello user!\"\n}"}}},
+        {"name": "Update Notification","request": {"method":"PUT","header":[{"key":"Authorization","value":"{{authHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/notifications/{{notificationId}}","host":["{{baseUrl}}"],"path":["api","notifications","{{notificationId}}"]},"body":{"mode":"raw","raw":"{\n  \"message\": \"Updated message\",\n  \"read\": true\n}"}}},
+        {"name": "Delete Notification","request": {"method":"DELETE","header":[{"key":"Authorization","value":"{{authHeader}}"}],"url":{"raw":"{{baseUrl}}/api/notifications/{{notificationId}}","host":["{{baseUrl}}"],"path":["api","notifications","{{notificationId}}"]}}}
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {"name": "Check Exists","request": {"method":"GET","url":{"raw":"{{baseUrl}}/api/admin/check-exists","host":["{{baseUrl}}"],"path":["api","admin","check-exists"]}}},
+        {"name": "Setup Admin","request": {"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/admin/setup","host":["{{baseUrl}}"],"path":["api","admin","setup"]},"body":{"mode":"raw","raw":"{\n  \"admin_id\": \"ADM001\",\n  \"username\": \"superadmin\",\n  \"password\": \"StrongPass123!\"\n}"}}},
+        {"name": "Admin Login","request": {"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/admin/login","host":["{{baseUrl}}"],"path":["api","admin","login"]},"body":{"mode":"raw","raw":"{\n  \"admin_id\": \"ADM001\",\n  \"password\": \"StrongPass123!\"\n}"}},"event":[{"listen":"test","script":{"type":"text/javascript","exec":["if (pm.response.code === 200) {","  const json = pm.response.json();","  if (json.token) { pm.environment.set('adminToken', json.token); }","}"]}}]},
+        {"name": "Me","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/me","host":["{{baseUrl}}"],"path":["api","admin","me"]}}},
+        {"name": "Dashboard","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/dashboard","host":["{{baseUrl}}"],"path":["api","admin","dashboard"]}}},
+        {"name": "Analytics","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/analytics","host":["{{baseUrl}}"],"path":["api","admin","analytics"]}}},
+        {"name": "Collections","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/collections","host":["{{baseUrl}}"],"path":["api","admin","collections"],"query":[{"key":"page","value":"1"},{"key":"limit","value":"20"}]}}},
+        {"name": "Workers","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/workers","host":["{{baseUrl}}"],"path":["api","admin","workers"]}}},
+        {"name": "Customers (Admin)","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/customers","host":["{{baseUrl}}"],"path":["api","admin","customers"]}}},
+        {"name": "Payments (Admin)","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/payments","host":["{{baseUrl}}"],"path":["api","admin","payments"],"query":[{"key":"status","value":"pending"}]}}},
+        {"name": "Verify Payment","request": {"method":"PUT","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"},{"key":"Content-Type","value":"application/json"}],"url":{"raw":"{{baseUrl}}/api/admin/verify-payment/{{paymentId}}","host":["{{baseUrl}}"],"path":["api","admin","verify-payment","{{paymentId}}"]},"body":{"mode":"raw","raw":"{\n  \"status\": \"verified\",\n  \"admin_notes\": \"Looks good\"\n}"}}},
+        {"name": "Reports","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/reports","host":["{{baseUrl}}"],"path":["api","admin","reports"],"query":[{"key":"report_type","value":"collections"}]}}},
+        {"name": "Export Reports","request": {"method":"GET","header":[{"key":"Authorization","value":"{{adminAuthHeader}}"}],"url":{"raw":"{{baseUrl}}/api/admin/reports/export","host":["{{baseUrl}}"],"path":["api","admin","reports","export"],"query":[{"key":"report_type","value":"collections"}]}}}
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.environment.set('authHeader', pm.environment.get('userToken') ? 'Bearer ' + pm.environment.get('userToken') : '');",
+          "pm.environment.set('adminAuthHeader', pm.environment.get('adminToken') ? 'Bearer ' + pm.environment.get('adminToken') : '');"
+        ]
+      }
+    }
+  ]
+}
